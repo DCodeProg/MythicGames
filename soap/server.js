@@ -38,6 +38,29 @@ const service = {
           `;
         callback(products);
       },
+      PatchProduct: async function ({ id, name, about, price }, callback) {
+        if (!id) {
+          throw {
+            Fault: {
+              Code: {
+                Value: "soap:Sender",
+                Subcode: { value: "rpc:BadArguments" },
+              },
+              Reason: { Text: "Processing Error" },
+              statusCode: 400,
+            },
+          };
+        }
+        const product = await sql`
+          UPDATE products
+          SET name = COALESCE(${name}, name),
+              about = COALESCE(${about}, about),
+              price = COALESCE(${price}, price)
+          WHERE id = ${id}
+          RETURNING *
+          `;
+        callback(product[0]);
+      },
     },
   },
 };
