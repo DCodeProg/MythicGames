@@ -6,3 +6,10 @@ CREATE TABLE products (
 );
 INSERT INTO products (name, about, price)
 VALUES ('My first game', 'This is an awesome game', '60');
+
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50),
+    email VARCHAR(100),
+    password VARCHAR(255)
+);
