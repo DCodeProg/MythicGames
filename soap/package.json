@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "postgres": "^3.4.8",
     "soap": "^1.8.0"
   }
 }
