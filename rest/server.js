@@ -37,6 +37,40 @@ app.post("/products", async (req, res) => {
     }
 });
 
+app.get("/products", async (req, res) => {
+    const products = await sql`
+    SELECT * FROM products
+    `;
+
+    res.send(products);
+});
+
+app.get("/products/:id", async (req, res) => {
+    const product = await sql`
+    SELECT * FROM products WHERE id=${req.params.id}
+    `;
+
+    if (product.length > 0) {
+        res.send(product[0]);
+    } else {
+        res.status(404).send({ message: "Not found" });
+    }
+});
+
+app.delete("/products/:id", async (req, res) => {
+    const product = await sql`
+    DELETE FROM products
+    WHERE id=${req.params.id}
+    RETURNING *
+    `;
+
+    if (product.length > 0) {
+        res.send(product[0]);
+    } else {
+        res.status(404).send({ message: "Not found" });
+    }
+});
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
