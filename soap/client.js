@@ -5,7 +5,7 @@ soap.createClient("http://localhost:8000/products?wsdl", {}, function (err, clie
     console.error("Error creating SOAP client:", err);
     return;
   }
-  // Make a SOAP request
+  // Make a SOAP request with missing parameters
   client.CreateProduct({ name: "My product" }, function (err, result) {
     if (err) {
       console.error(
@@ -18,4 +18,19 @@ soap.createClient("http://localhost:8000/products?wsdl", {}, function (err, clie
     }
     console.log("Result:", result);
   });
+
+  // Make a SOAP request with all parameters
+  client.CreateProduct({ name: "My product", about: "This is a great product", price: 19.99 }, function (err, result) {
+    if (err) {
+      console.error(
+        "Error making SOAP request:",
+        err.response.status,
+        err.response.statusText,
+        err.body
+      );
+      return;
+    }
+    console.log("Result:", result);
+  });
+
 });
