@@ -1,12 +1,15 @@
 const soap = require("soap");
 const fs = require("node:fs");
 const http = require("http");
+const postgres = require("postgres");
+
+const sql = postgres({ db: "mydb", user: "user", password: "password" });
 
 // Define the service implementation
 const service = {
   ProductsService: {
     ProductsPort: {
-      CreateProduct: function ({ name, about, price }, callback) {
+      CreateProduct: async function ({ name, about, price }, callback) {
         if (!name || !about || !price) {
           throw {
             Fault: {
@@ -19,7 +22,15 @@ const service = {
             },
           };
         }
-        callback({ ...args, id: "myid" });
+
+        const product = await sql`
+          INSERT INTO products (name, about, price)
+          VALUES (${name}, ${about}, ${price})
+          RETURNING *
+          `;
+
+        // Will return only one element.
+        callback(product[0]);
       },
     },
   },
