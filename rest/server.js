@@ -5,6 +5,14 @@ const postgres = require("postgres");
 
 const sql = postgres({ db: "mydb", user: "user", password: "password" });
 
+// Schemas
+const ProductSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  about: z.string(),
+  price: z.number().positive(),
+});
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -14,3 +22,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}`);
 });
+
+ 
