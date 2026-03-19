@@ -45,4 +45,18 @@ soap.createClient("http://localhost:8000/products?wsdl", {}, function (err, clie
     }
     console.log("Patch Product result:", result);
   });
+
+  client.DeleteProduct({ id: 6 }, function (err, result) {
+    if (err) {
+      console.error(
+        "Error making SOAP request:",
+        err.response.status,
+        err.response.statusText,
+        err.body
+      );
+      return;
+    }
+    console.log("Delete Product result:", result);
+  });
+
 });
