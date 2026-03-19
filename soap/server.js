@@ -61,6 +61,25 @@ const service = {
           `;
         callback(product[0]);
       },
+      DeleteProduct: async function ({ id }, callback) {
+        if (!id) {
+          throw {
+            Fault: {
+              Code: {
+                Value: "soap:Sender",
+                Subcode: { value: "rpc:BadArguments" },
+              },
+              Reason: { Text: "Processing Error" },
+              statusCode: 400,
+            },
+          };
+        }
+        await sql`
+          DELETE FROM products
+          WHERE id = ${id}
+          `;
+        callback({ success: true });
+      },
     },
   },
 };
