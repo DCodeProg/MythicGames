@@ -27,6 +27,8 @@
                 </xsd:complexType>
             </xsd:element>
 
+            <xsd:element name="GetProductsRequest" type="xsd:anyType" />
+
             <xsd:element name="GetProductsResponse">
                 <xsd:complexType>
                     <xsd:sequence>

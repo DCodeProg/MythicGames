@@ -5,6 +5,21 @@ soap.createClient("http://localhost:8000/products?wsdl", {}, function (err, clie
     console.error("Error creating SOAP client:", err);
     return;
   }
+
+  client.GetProducts({}, function (err, result) {
+    if (err) {
+      console.error(
+        "Error making SOAP request:",
+        err.response.status,
+        err.response.statusText,
+        err.body
+      );
+      return;
+    }
+    console.log("Result:", result);
+  });
+
+
   // Make a SOAP request with missing parameters
   client.CreateProduct({ name: "My product" }, function (err, result) {
     if (err) {
