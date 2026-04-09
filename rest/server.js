@@ -100,6 +100,39 @@ app.post("/users", async (req, res) => {
     }
 });
 
+app.get("/users", async (req, res) => {
+    const users = await sql`
+    SELECT id, username, email FROM users
+    `;
+    res.send(users);
+});
+
+app.get("/users/:id", async (req, res) => {
+    const user = await sql`
+    SELECT id, username, email FROM users WHERE id=${req.params.id}
+    `;
+
+    if (user.length > 0) {
+        res.send(user[0]);
+    } else {
+        res.status(404).send({ message: "Not found" });
+    }
+});
+
+app.delete("/users/:id", async (req, res) => {
+    const user = await sql`
+    DELETE FROM users
+    WHERE id=${req.params.id}
+    RETURNING id, username, email
+    `;
+
+    if (user.length > 0) {
+        res.send(user[0]);
+    } else {
+        res.status(404).send({ message: "Not found" });
+    }
+});
+
 app.get("/", (req, res) => {
     res.send("Hello World!");
 });
